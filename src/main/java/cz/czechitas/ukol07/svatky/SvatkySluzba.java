@@ -19,9 +19,10 @@ public class SvatkySluzba {
 
     public SvatkySluzba() throws IOException {
         // TODO načíst seznam svátků ze souboru svatky.json
-
-        // Následující řádek po vlastní implementaci smažete.
-        seznamSvatku = null;
+        seznamSvatku = objectMapper.readValue(
+                cestaKDatum.toFile(),
+                SeznamSvatku.class
+        );
     }
 
     public List<String> vyhledatSvatkyDnes() {
@@ -36,7 +37,10 @@ public class SvatkySluzba {
         // pomocí metody map() získat z objektu jméno
         // pomocí toList() převést na List
 
-        // Následující řádek po vlastní implementaci smažete.
-        return List.of();
+        return seznamSvatku.getSvatky()
+                .stream()
+                .filter(den -> den.getDen().equals(day))
+                .map(den -> den.getJmeno())
+                .toList();
     }
 }
